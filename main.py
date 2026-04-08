@@ -1,16 +1,25 @@
 import requests
-import json
 import os
 from dotenv import load_dotenv
+from datetime import date
 # SAM.gov API endpoint
 SAM_API_URL = "https://api.sam.gov/prod/opportunities/v2/search"
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+discord_hook = os.getenv("discord_hook")
+
+def send_discord():
+    pass
 
 def get_sam_opportunities():
+    formatted = date.today().strftime("%m/%d/%Y")
     headers = { 'Accept': 'application/json' }
-    params = { 'api_key': API_KEY, 'limit': 25, 'postedFrom': '01/01/2026', 'postedTo': '01/31/2026', 'ptype': ['p', 'o'] }
+    params = { 'api_key': API_KEY, 'limit':1000,
+              'postedFrom': '01/01/2026', 'postedTo': formatted, 
+              'ptype': ['p', 'o', 'r', 'k'], #'state':['CA', 'TX'],
+              'ncode':'561720', 'typeofsetaside':'SBA' 
+            }
 
     #Solicitations only
     response = requests.get(SAM_API_URL, headers=headers, params=params)
@@ -23,6 +32,7 @@ def get_sam_opportunities():
         print(f"Posted: {opp.get('postedDate')}")
         print(f"Deadline: {opp.get('responseDeadLine')}")
         print(f"Type: {opp.get('type')}")
+        print(f"Place of Performance: {opp.get('placeOfPerformance')}")
         #Contact info is in an array
         contacts = opp.get('pointOfContact', [])
         if contacts:
@@ -30,7 +40,6 @@ def get_sam_opportunities():
             print("---")
             
 get_sam_opportunities()
-
 
 #if __name__ == "__main__":
 #    main()
