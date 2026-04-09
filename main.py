@@ -2,6 +2,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from datetime import date
+from discord import SyncWebhook
 # SAM.gov API endpoint
 SAM_API_URL = "https://api.sam.gov/prod/opportunities/v2/search"
 
@@ -10,7 +11,8 @@ API_KEY = os.getenv("API_KEY")
 discord_hook = os.getenv("discord_hook")
 
 def send_discord():
-    pass
+    webook = SyncWebhook.from_url(discord_hook)
+    webook.send("Second test")
 
 def get_sam_opportunities():
     formatted = date.today().strftime("%m/%d/%Y")
@@ -39,7 +41,8 @@ def get_sam_opportunities():
             print(f"Contact: {contacts[0].get('email', 'N/A')}")
             print("---")
             
-get_sam_opportunities()
+#get_sam_opportunities()
+send_discord()
 
 #if __name__ == "__main__":
 #    main()
