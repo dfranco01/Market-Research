@@ -1,9 +1,7 @@
-import call
-import db
 import send
 
 def main():
-    pass
+    send.send_discord()
 
 if __name__ == "__main__":
     main()

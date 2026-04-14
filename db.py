@@ -1,4 +1,4 @@
-#TO DO: create table with columns of API parameters we care about
+#TO DO: 
 # initialize the database with results so far
 # when a new posting comes, figure out how to only receieve relevant postings so
    #the discord doesn't get bombarded
@@ -7,26 +7,34 @@
 import sqlite3
 import call
 
-results = call.get_sam_opportunities()
-if results:
-    pass
+def collect():
 
-with sqlite3.connect("data.sqlite3") as conn:
-    cursor = conn.cursor()
+    results = call.get_sam_opportunities()
 
-    cursor.execute(
-            """CREATE TABLE IF NOT EXISTS projects (
-            solnum INTEGER PRIMARY KEY, 
-            title text NOT NULL, 
-            posted DATE, 
-            deadline DATE
-            );"""
+    with sqlite3.connect("data.sqlite3") as conn:
+        cursor = conn.cursor()
+
+        cursor.execute(
+                """CREATE TABLE IF NOT EXISTS solicitations (
+                solnum varchar(255) PRIMARY KEY, 
+                title varchar(255) NOT NULL, 
+                posted varchar(255), 
+                deadline varchar(255)
+                );"""
+            )
+        conn.commit()
+
+        for opportunity in results:
+            cursor.execute(
+                """INSERT OR IGNORE INTO solicitations VALUES(
+                ?, ?, ?, ? 
+                )""", (opportunity['solicitationNumber'], opportunity['title'], opportunity['postedDate'], opportunity['responseDeadLine'])
+            )
+
+        conn.commit()
+
+        cursor.execute(
+            """SELECT * from solicitations"""
         )
-    conn.commit()
-
-    #The '?' will allow call data to be inserted into the db
-    #Insert or Ignore will prevent duplicate entries being added
-    #cursor.rowcount could be used to only send new data to Discord 
-    
-    
-    print("success")
+        rows = cursor.fetchall()
+        return rows

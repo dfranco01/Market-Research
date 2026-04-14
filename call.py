@@ -25,18 +25,19 @@ def get_sam_opportunities():
     opportunities = data.get('opportunitiesData', [])
     
     for opp in opportunities:
-        print(f"Solicitation Number: {opp.get("solicitationNumber")}")
-        print(f"Title: {opp.get('title')}")
-        print(f"Agency: {opp.get('fullParentPathName')}")
-        print(f"Posted: {opp.get('postedDate')}")
-        print(f"Deadline: {opp.get('responseDeadLine')}")
-        print(f"Type: {opp.get('type')}")
-        print(f"Place of Performance: {opp.get('placeOfPerformance')}")
+        #print(f"Solicitation Number: {opp.get("solicitationNumber")}")
+        #print(f"Title: {opp.get('title')}")
+        #print(f"Agency: {opp.get('fullParentPathName')}")
+        #print(f"Posted: {opp.get('postedDate')}")
+        #print(f"Deadline: {opp.get('responseDeadLine')}")
+        #print(f"Type: {opp.get('type')}")
+        #print(f"Place of Performance: {opp.get('placeOfPerformance')}")
         #Contact info is in an array
         contacts = opp.get('pointOfContact', [])
         if contacts:
-            print(f"Contact: {contacts[0].get('email', 'N/A')}")
-            print("---")
+            pass
+        #    print(f"Contact: {contacts[0].get('email', 'N/A')}")
+        #    print("---")
     return opportunities
 
 #get_sam_opportunities()
