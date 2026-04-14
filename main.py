@@ -1,7 +1,7 @@
-import send
+import utils.send
 
 def main():
-    send.send_discord()
+    utils.send.send_discord()
 
 if __name__ == "__main__":
     main()
